@@ -18,13 +18,13 @@ logger = logging.getLogger('api')
 with open('../config/model_conf.yaml') as f:
     model_conf = yaml.load(f)
 
+
 class ModelsHandler:
     def __init__(self):
         self.model_path = '../models'
         self.scene = 'non-mask'
         self.load_models()
         self.face_cropper = FaceRecImageCropper()
-
 
     def load_models(self):
         logger.info('Start to load the face recognition model...')
@@ -80,7 +80,7 @@ class ModelsHandler:
     def get_detection_model(self):
         return self.faceDetModelHandler
 
-    def get_image_feature(self, image:Image, bbox=None, full_image=False):
+    def get_image_feature(self, image: Image, bbox=None, full_image=False):
         if bbox is None:
             width, height, _ = image.shape
             bbox = [0, 0, width, height]
