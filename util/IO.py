@@ -1,7 +1,8 @@
 import cv2
 from PIL import Image
 import logging.config
-
+import csv
+import numpy as np
 
 class IO:
     @staticmethod
@@ -27,7 +28,7 @@ class IO:
             image_pil = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             image_pil = Image.fromarray(image_pil)
             face = image_pil.crop(item['bbox'])
-            path = '../output/faces_detected/'
+            path = 'faces_detected/'
             face.save(path + str(item['name']) + '.png')
 
     @staticmethod
@@ -54,3 +55,10 @@ class IO:
 
         # Display the resulting image
         cv2.imshow('Video', frame)
+
+    @staticmethod
+    def write_csv_results(results):
+        with open('../output/results.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(('Student', 'Confidence'))
+            writer.writerows(zip(results.keys(), results.values()))
