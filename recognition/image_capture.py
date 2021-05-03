@@ -17,10 +17,10 @@ class ImageCapture:
         cap.release()
         cv2.destroyAllWindows()
         if save:
-            cv2.imwrite('zxc.jpg', frame)
+            cv2.imwrite('../input/input.jpg', frame)
         return frame
 
-    def capture_video(self, recording_time=3):
+    def capture_video(self, recording_time=5):
         frames_list = []
 
         cap = cv2.VideoCapture(0)
@@ -39,7 +39,6 @@ class ImageCapture:
 
         cap.release()
         return frames_list
-
 
 
 if __name__ == '__main__':
