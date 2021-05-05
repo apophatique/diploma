@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/config" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/input" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/input/database" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/input/database/popular" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/face_alignment" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/face_alignment/face_alignment_1.0" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/face_alignment/face_alignment_2.0" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/face_detection" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/face_detection/face_detection_1.0" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/face_detection/face_detection_2.0" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/face_recognition" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/face_recognition/face_recognition_1.0" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/face_recognition/face_recognition_2.0" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models/network_def" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/output" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/output/faces_detected" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/scripts" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/scripts/resource" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/utils" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/database" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/image_cropper" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/image_cropper/arcface_cropper" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/model_handler" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/model_handler/face_alignment" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/model_handler/face_detection" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/model_handler/face_recognition" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/model_loader" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/model_loader/face_alignment" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/model_loader/face_detection" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/models_handlers/model_loader/face_recognition" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/network" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/recognition" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/util" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/.idea" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/network/database" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/network/schedule" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/recognition-system" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/recognition-system/database" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="PyDocumentationSettings">
+    <option name="format" value="PLAIN" />
+    <option name="myDocStringFormat" value="Plain" />
+  </component>
+</module>
