@@ -22,24 +22,32 @@ class IO:
                 fd.write(line)
 
     @staticmethod
-    def save_detected_faces(image, results):
-        for key in results:
-            item = results[key]
-            image_pil = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    def save_detected_faces(results, frame, path):
+        for name in results:
+            item = results[name]
+            (top, right, bottom, left) = item['bbox']
+            bbox = [
+                left,
+                top,
+                right,
+                bottom
+            ]
+            image_pil = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image_pil = Image.fromarray(image_pil)
-            face = image_pil.crop(item['bbox'])
-            path = 'faces_detected/'
-            face.save(path + str(item['name']) + '.png')
+            face = image_pil.crop(bbox)
+            face.save(path + name + '.png')
 
     @staticmethod
     def save_image(image, output_path):
         cv2.imwrite(output_path, image)
 
     @staticmethod
-    def show_video_frame(frame, face_locations, face_names):
+    def show_video_frame(results, frame):
         # Display the results
-        for (top, right, bottom, left), name in zip(face_locations, face_names):
+        for name in results:
             # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+            item = results[name]
+            (top, right, bottom, left) = item['bbox']
             top *= 4
             right *= 4
             bottom *= 4
@@ -57,8 +65,9 @@ class IO:
         cv2.imshow('Video', frame)
 
     @staticmethod
-    def write_csv_results(results):
-        with open('../output/results.csv', 'w') as f:
+    def write_csv_results(results, path):
+        with open(path, 'w') as f:
             writer = csv.writer(f)
             writer.writerow(('Student', 'Confidence'))
-            writer.writerows(zip(results.keys(), results.values()))
+            for name in results:
+                writer.writerow((name, results[name]['confidence']))
