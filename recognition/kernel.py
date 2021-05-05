@@ -31,58 +31,20 @@ class RecognitionSystem:
         known_face_names = [
             item.get_name() for item in self.database
         ]
-        face_names = []
-        face_dists = []
-
+        results = {}
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)
 
-        for face_encoding in face_encodings:
+        for face_encoding, face_location in zip(face_encodings, face_locations):
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
             name = known_face_names[best_match_index]
-            face_names.append(name)
             dist = face_distances[best_match_index]
-            face_dists.append(dist)
-        return face_names, face_dists, frame, face_locations
-
-    def work_on_video(self):
-        video_fragment = self.imagecapture.capture_video()
-        known_face_encodings = [
-            item.get_encoding() for item in self.database
-        ]
-        known_face_names = [
-            item.get_name() for item in self.database
-        ]
-        video_fragment = [
-            fragment for index, fragment in enumerate(video_fragment) if index % 4 == 0
-        ]
-        face_names = set()
-        face_dists = []
-        for frame in video_fragment:
-            small_frame = ImageTransforms.image_to_small(frame)
-            # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-            rgb_small_frame = small_frame[:, :, ::-1]
-            face_locations = face_recognition.face_locations(rgb_small_frame)
-            face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-
-            for face_encoding in face_encodings:
-                face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
-                best_match_index = np.argmin(face_distances)
-                name = known_face_names[best_match_index]
-                if name in face_names:
-                    dist = face_distances[best_match_index]
-                    face_dists[best_match_index] = (face_dists[best_match_index] + dist) / 2
-                face_names.add(name)
-            IO.show_video_frame(frame, face_locations, face_names)
-            # Display the resulting image
-            cv2.imshow('Video', frame)
-            # Hit 'q' on the keyboard to quit!
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-            # Release handle to the webcam
-        cv2.destroyAllWindows()
-        return face_names, face_dists, None, None
+            results[name] = {
+                'confidence': dist,
+                'bbox': face_location
+            }
+        return results, frame
 
     def work_on_webcam(self):
         video_capture = cv2.VideoCapture(0)
@@ -94,8 +56,7 @@ class RecognitionSystem:
         ]
         process_this_frame = True
 
-        face_names = set()
-        face_dists = {}
+        results = {}
         while True:
             # Grab a single frame of video
             ret, frame = video_capture.read()
@@ -111,34 +72,74 @@ class RecognitionSystem:
                 face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
                 # Сравнение каждого детектированного лица с массивом лиц базы данных
 
-                for face_encoding in face_encodings:
+                for face_encoding, face_location in zip(face_encodings, face_locations):
                     face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                     best_match_index = np.argmin(face_distances)
 
                     name = known_face_names[best_match_index]
                     dist = face_distances[best_match_index]
-                    if name not in face_names:
-                        face_dists[name] = dist
+                    if name not in results:
+                        results[name] = {
+                            'confidence': dist
+                        }
                     else:
-                        dist_pre = face_dists[name]
-                        face_dists[name] = (dist_pre + dist) / 2
-                    face_names.add(name)
+                        results[name]['confidence'] = (results[name]['confidence'] + dist) / 2
+                    results[name]['bbox'] = face_location
 
             process_this_frame = not process_this_frame
             # Display the results
-            IO.show_video_frame(frame, face_locations, face_names)
-            # Display the resulting image
-            cv2.imshow('Video', frame)
+            IO.show_video_frame(results, frame)
             # Hit 'q' on the keyboard to quit!
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         # Release handle to the webcam
         video_capture.release()
         cv2.destroyAllWindows()
-        return face_names, face_dists, frame, face_locations
+        return results, frame
+
+    def work_on_video(self):
+        video_fragment = self.imagecapture.capture_video()
+        known_face_encodings = [
+            item.get_encoding() for item in self.database
+        ]
+        known_face_names = [
+            item.get_name() for item in self.database
+        ]
+        video_fragment = [
+            fragment for index, fragment in enumerate(video_fragment) if index % 4 == 0
+        ]
+        results = {}
+
+        for frame in video_fragment:
+            small_frame = ImageTransforms.image_to_small(frame)
+            # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+            rgb_small_frame = small_frame[:, :, ::-1]
+            face_locations = face_recognition.face_locations(rgb_small_frame)
+            face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+            for face_encoding, face_location in zip(face_encodings, face_locations):
+                face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                best_match_index = np.argmin(face_distances)
+
+                name = known_face_names[best_match_index]
+                dist = face_distances[best_match_index]
+                if name not in results:
+                    results[name] = {
+                        'confidence': dist
+                    }
+                else:
+                    results[name]['confidence'] = (results[name]['confidence'] + dist) / 2
+                results[name]['bbox'] = face_location
+            IO.show_video_frame(results, frame)
+            # Hit 'q' on the keyboard to quit!
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+            # Release handle to the webcam
+        cv2.destroyAllWindows()
+        return results, video_fragment
 
     def run(self, mode, database):
         self.database = database
         work_method = self.methods_map.get(mode)
-        results, frame, boxes = work_method()
-        return results, frame, boxes
+        results, frame = work_method()
+        return results, frame
