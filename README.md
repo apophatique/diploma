@@ -6,6 +6,10 @@
 
 Больше - тут: https://docs.google.com/document/d/1XiYXLKXKrHDYk3An2qt_oZPoI16rCP5xBJP9rzDxYfQ/edit#heading=h.9i6pm23ncttd
 
+# Требования
+  Python >= 3.8
+
+
 
 *readme будет дополняться по мере работы*
 
