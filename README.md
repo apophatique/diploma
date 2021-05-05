@@ -7,7 +7,15 @@
 Больше - тут: https://docs.google.com/document/d/1XiYXLKXKrHDYk3An2qt_oZPoI16rCP5xBJP9rzDxYfQ/edit#heading=h.9i6pm23ncttd
 
 # Требования
-  Python >= 3.8
+  1. Python >= 3.8
+  2. Все пакеты, указанные в requirenments.txt
+
+# Запуск
+Поместите в папку input/database/ изображения лиц, которые вы хотите распознать на изображении. Затем запустите main.py, указав параметр mode. Он может быть:
+  1. image - распознавание по фотографии
+  2. webcam - живое распознавание с вебкамерой
+  3. video - 5-ти секундная запись видео через вебкамеру и распознавание на нем
+  
 
 
 
