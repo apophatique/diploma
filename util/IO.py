@@ -2,10 +2,11 @@ import cv2
 from PIL import Image
 import csv
 
+
 class IO:
     @staticmethod
-    def save_image_with_detections(image, bboxs, output_path):
-        for box in bboxs:
+    def save_image_with_detections(image, bbox, output_path):
+        for box in bbox:
             box = list(map(int, box))
             cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), (255, 255, 255), 2)
         cv2.imwrite(output_path, image)

@@ -54,9 +54,10 @@ class RecognitionSystem:
         known_face_names = [
             item.get_name() for item in self.database
         ]
+        results = {}
+        tmp_result = {}
         process_this_frame = True
 
-        results = {}
         while True:
             # Grab a single frame of video
             ret, frame = video_capture.read()
@@ -67,6 +68,7 @@ class RecognitionSystem:
 
             # Only process every other frame of video to save time
             if process_this_frame:
+                tmp_result.clear()
                 # Find all the faces and face encodings in the current frame of video
                 face_locations = face_recognition.face_locations(rgb_small_frame)
                 face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
@@ -75,23 +77,25 @@ class RecognitionSystem:
                 for face_encoding, face_location in zip(face_encodings, face_locations):
                     face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                     best_match_index = np.argmin(face_distances)
-
                     name = known_face_names[best_match_index]
                     dist = face_distances[best_match_index]
-                    if name not in results:
-                        results[name] = {
-                            'confidence': dist
-                        }
-                    else:
-                        results[name]['confidence'] = (results[name]['confidence'] + dist) / 2
-                    results[name]['bbox'] = face_location
-
-            process_this_frame = not process_this_frame
+                    tmp_result[name] = {
+                        'confidence': dist,
+                        'bbox': face_location
+                    }
             # Display the results
-            IO.show_video_frame(results, frame)
+            IO.show_video_frame(tmp_result, frame)
+            for name in tmp_result:
+                if name not in results.keys():
+                    results[name] = {
+                        'confidence': tmp_result[name]['confidence']
+                    }
+                else:
+                    results[name]['confidence'] = (results[name]['confidence'] + tmp_result[name]['confidence']) / 2
             # Hit 'q' on the keyboard to quit!
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+            process_this_frame = not process_this_frame
         # Release handle to the webcam
         video_capture.release()
         cv2.destroyAllWindows()
@@ -109,6 +113,7 @@ class RecognitionSystem:
             fragment for index, fragment in enumerate(video_fragment) if index % 4 == 0
         ]
         results = {}
+        tmp_result = {}
 
         for frame in video_fragment:
             small_frame = ImageTransforms.image_to_small(frame)
@@ -116,6 +121,16 @@ class RecognitionSystem:
             rgb_small_frame = small_frame[:, :, ::-1]
             face_locations = face_recognition.face_locations(rgb_small_frame)
             face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+            for face_encoding, face_location in zip(face_encodings, face_locations):
+                face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                best_match_index = np.argmin(face_distances)
+                name = known_face_names[best_match_index]
+                dist = face_distances[best_match_index]
+                tmp_result[name] = {
+                    'confidence': dist,
+                    'bbox': face_location
+                }
 
             for face_encoding, face_location in zip(face_encodings, face_locations):
                 face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
@@ -130,7 +145,14 @@ class RecognitionSystem:
                 else:
                     results[name]['confidence'] = (results[name]['confidence'] + dist) / 2
                 results[name]['bbox'] = face_location
-            IO.show_video_frame(results, frame)
+            IO.show_video_frame(tmp_result, frame)
+            for name in tmp_result:
+                if name not in results.keys():
+                    results[name] = {
+                        'confidence': tmp_result[name]['confidence']
+                    }
+                else:
+                    results[name]['confidence'] = (results[name]['confidence'] + tmp_result[name]['confidence']) / 2
             # Hit 'q' on the keyboard to quit!
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
