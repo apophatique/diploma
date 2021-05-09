@@ -1,8 +1,6 @@
 import cv2
 from PIL import Image
-import logging.config
 import csv
-import numpy as np
 
 class IO:
     @staticmethod
