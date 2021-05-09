@@ -8,18 +8,18 @@ from work_states import SystemWorkStates
 
 
 # TODO:
-#   1. ImageTransforms: обрезать сразу np.array
+#   1. (-) ImageTransforms: обрезать сразу np.array
 #   2. (+) Database: сразу добавлять feature лица
 #   3. (+) work_on_image_advanced(): исправить сравнение лиц через distance + np.argmin()
-#   4. (*) Удалить из cv2 из контроллера
-
+#   4. (+) Удалить из cv2 из контроллера
+#   5.
 
 class RecognitionSystem:
     def __init__(self):
         self.methods_map = {
-            SystemWorkStates.image: self.work_on_image,
-            SystemWorkStates.video: self.work_on_video,
-            SystemWorkStates.webcam: self.work_on_webcam
+            SystemWorkStates.image.value: self.work_on_image,
+            SystemWorkStates.video.value: self.work_on_video,
+            SystemWorkStates.webcam.value: self.work_on_webcam
         }
         self.imagecapture = ImageCapture()
 
