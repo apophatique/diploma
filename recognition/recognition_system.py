@@ -26,10 +26,10 @@ class RecognitionSystem:
     def work_on_image(self):
         frame = self.imagecapture.capture_photo()
         known_face_encodings = [
-            item.get_encoding() for item in self.database
+            item.get_encoding() for item in self.data_students
         ]
         known_face_names = [
-            item.get_name() for item in self.database
+            item.get_name() for item in self.data_students
         ]
         results = {}
         face_locations = face_recognition.face_locations(frame)
@@ -49,10 +49,10 @@ class RecognitionSystem:
     def work_on_webcam(self):
         video_capture = cv2.VideoCapture(0)
         known_face_encodings = [
-            item.get_encoding() for item in self.database
+            item.get_encoding() for item in self.data_students
         ]
         known_face_names = [
-            item.get_name() for item in self.database
+            item.get_name() for item in self.data_students
         ]
         results = {}
         tmp_result = {}
@@ -104,24 +104,22 @@ class RecognitionSystem:
     def work_on_video(self):
         video_fragment = self.imagecapture.capture_video()
         known_face_encodings = [
-            item.get_encoding() for item in self.database
+            item.get_encoding() for item in self.data_students
         ]
         known_face_names = [
-            item.get_name() for item in self.database
+            item.get_name() for item in self.data_students
         ]
         video_fragment = [
             fragment for index, fragment in enumerate(video_fragment) if index % 4 == 0
         ]
         results = {}
         tmp_result = {}
-
         for frame in video_fragment:
             small_frame = ImageTransforms.image_to_small(frame)
             # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
             rgb_small_frame = small_frame[:, :, ::-1]
             face_locations = face_recognition.face_locations(rgb_small_frame)
             face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
-
             for face_encoding, face_location in zip(face_encodings, face_locations):
                 face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                 best_match_index = np.argmin(face_distances)
@@ -131,11 +129,9 @@ class RecognitionSystem:
                     'confidence': dist,
                     'bbox': face_location
                 }
-
             for face_encoding, face_location in zip(face_encodings, face_locations):
                 face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                 best_match_index = np.argmin(face_distances)
-
                 name = known_face_names[best_match_index]
                 dist = face_distances[best_match_index]
                 if name not in results:
@@ -160,8 +156,8 @@ class RecognitionSystem:
         cv2.destroyAllWindows()
         return results, video_fragment
 
-    def run(self, mode, database):
-        self.database = database
+    def run(self, mode, data_students):
+        self.data_students = data_students
         work_method = self.methods_map.get(mode)
         results, frame = work_method()
         return results, frame
