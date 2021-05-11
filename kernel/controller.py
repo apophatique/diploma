@@ -13,17 +13,9 @@ class Controller:
         self.schedule_controller = ScheduleController()
         self.database = Database(config['faces_folder_path'])
 
-    def run(self, system_work_state, auditorium=None, date=None):
-        # groups_in_auditorium = self.schedule_controller.get_groups_in_auditorium(auditorium, date)
-        # database = self.database.get_data_by_network(groups_in_auditorium)
-        database = self.database.get_database_from_folder()
-        results, frame = self.recognition_system.run(system_work_state, database)
+    def run(self, system_work_state, auditorium, date, time):
+        groups_in_auditorium = self.schedule_controller.get_groups_in_auditorium(auditorium, date, time)
+        data_students = self.database.get_students_data(groups_in_auditorium)
+        results, frame = self.recognition_system.run(system_work_state, data_students)
 
-        if system_work_state is SystemWorkStates.image.value:
-            IO.save_image(frame, config['frame_output_path'])
-            IO.save_detected_faces(results, frame, config['faces_detected'])
-        if system_work_state is SystemWorkStates.webcam.value:
-            pass
-        if system_work_state is SystemWorkStates.video.value:
-            pass
-        IO.write_csv_results(results, config['results_output_path'])
+        IO.save_work_results(results, frame, system_work_state, config)
