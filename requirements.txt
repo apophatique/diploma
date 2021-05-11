@@ -1,5 +1,7 @@
 face_recognition
-opencv-python
+opencv-python~=4.5.1.48
 os
-numpy
+numpy~=1.20.2
 PIL
+pillow~=8.0.1
+requests~=2.18.4
