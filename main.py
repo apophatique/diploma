@@ -3,9 +3,9 @@ from controller import Controller
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-mode', default='webcam', type=str)
-parser.add_argument('-auditorium', type=str)
-parser.add_argument('-date', type=str)
-parser.add_argument('-time', type=str)
+parser.add_argument('-auditorium', default='8-207', type=str)
+parser.add_argument('-date', default='2021.05.13', type=str)
+parser.add_argument('-time', default='12:00', type=str)
 args = parser.parse_args()
 
 
