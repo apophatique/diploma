@@ -1,8 +1,14 @@
+import numpy as np
+
 class Student:
-    def __init__(self, name, face_image, face_encoding):
-        self.name = name
-        self.face_image = face_image
-        self.face_encoding = face_encoding
+    def __init__(self, data):
+        self.name = data[0]
+        self.surname = data[1]
+        self.patronymic = data[2]
+        self.sex = data[3]
+        self.group = data[4]
+        self.face_image = data[5]
+        self.face_encoding = np.fromstring(data[6], dtype=np.float64)
 
     def get_face(self):
         return self.face_image
