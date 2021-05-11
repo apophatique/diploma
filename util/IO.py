@@ -1,6 +1,7 @@
 import cv2
-from PIL import Image
 import csv
+from PIL import Image
+from work_states import SystemWorkStates
 
 
 class IO:
@@ -70,3 +71,15 @@ class IO:
             writer.writerow(('Student', 'Confidence'))
             for name in results:
                 writer.writerow((name, results[name]['confidence']))
+
+    @staticmethod
+    def save_work_results(results, frame, work_state, config):
+        IO.write_csv_results(results, config['results_output_path'])
+
+        if work_state is SystemWorkStates.image.value:
+            IO.save_image(frame, config['frame_output_path'])
+            IO.save_detected_faces(results, frame, config['faces_detected'])
+        if work_state is SystemWorkStates.webcam.value:
+            pass
+        if work_state is SystemWorkStates.video.value:
+            pass
