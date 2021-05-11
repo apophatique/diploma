@@ -22,7 +22,7 @@
 1. Поместите в папку input/database/ фотографии лиц, которые вы хотите распознать. При этом рекомендуется оставить лишь лицо, обрезав весь лишний фон.
 2. Фотографии должны быть названы в следующем формате:
     имя_фамилия_отчество_пол_группа.png
-3. В [schedule_controller] (https://github.com/apophatique/diploma/blob/master/network/schedule/schedule_controller.py) поставьте заглушки на возврат групп в аудитории: удалите строки *19* и *23*
+3. В [schedule_controller](https://github.com/apophatique/diploma/blob/master/network/schedule/schedule_controller.py) поставьте заглушки на возврат групп в аудитории: удалите строки *19* и *23*
 4. Запустите [main.py], указав параметры: 
     - mode - режим распознавания. Он может быть:
          * image - распознавание лиц по фотографии
