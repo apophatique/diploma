@@ -16,6 +16,12 @@ class ScheduleController:
         )
         response = requests.get(self.request_url + search_part).json()
 
+        '''
+        # TODO
+        print(response)
+        return 'PIN-171'
+        '''
+
         time_now = datetime.datetime.strptime(time_str, self.time_format)
         for lesson in response:
             begin_lesson_str = lesson['beginLesson']
